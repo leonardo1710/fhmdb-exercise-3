@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb;
 
+import at.ac.fhcampuswien.fhmdb.database.Database;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,6 +18,30 @@ public class FhmdbApplication extends Application {
         stage.setTitle("FHMDb!");
         stage.setScene(scene);
         stage.show();
+
+        try {
+            Database.initDatabase();
+            /*
+            JdbcPooledConnectionSource connectionSource = new JdbcPooledConnectionSource("jdbc:h2:mem:fhmdb");
+
+            TableUtils.createTable(connectionSource, Watchlist.class);
+
+            Dao<Watchlist, Long> watchlistDao = DaoManager.createDao(connectionSource, Watchlist.class);
+
+            Watchlist watchlist = new Watchlist("tt1234567", "Test Movie", "Test Description", 2021);
+
+            watchlistDao.create(watchlist);
+
+            Watchlist watchlistFromDb = watchlistDao.queryForId(watchlist.getId());
+
+            System.out.println(watchlistFromDb.getTitle());
+
+            connectionSource.close();
+
+             */
+        }  catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void main(String[] args) {

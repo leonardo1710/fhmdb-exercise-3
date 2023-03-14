@@ -27,3 +27,12 @@ Maven uses the default system Java installation. If you have multiple Java insta
 
 ### Run the tests
 Run automated tests by running `mvn clean test` command in Maven.
+
+### TODO
+1. Add H2 and ORMLite to dependencies (H2, ORMLite jdbc)
+2. Add dependencies to `module-info.java` (requires...)
+  `requires ormlite.jdbc;
+   requires java.sql;
+   opens at.ac.fhcampuswien.fhmdb.entities to ormlite.jdbc;`
+3. Add a Database Class
+4. Make Watchlist Class an Entity
