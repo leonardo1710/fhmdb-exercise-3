@@ -1,19 +1,27 @@
 package at.ac.fhcampuswien.fhmdb;
 
 import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
+import at.ac.fhcampuswien.fhmdb.api.MovieApiException;
+import at.ac.fhcampuswien.fhmdb.database.WatchlistDao;
+import at.ac.fhcampuswien.fhmdb.database.WatchlistEntity;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.SortedState;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXListView;
+import com.j256.ormlite.dao.DaoManager;
+import com.jfoenix.controls.*;
+import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
+import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.*;
@@ -40,7 +48,13 @@ public class HomeController implements Initializable {
     public JFXComboBox ratingFromComboBox;
 
     @FXML
+    public JFXHamburger hamburgerMenu;
+
+    @FXML
     public JFXButton sortBtn;
+
+    @FXML
+    private JFXDrawer drawer;
 
     public List<Movie> allMovies;
 
@@ -48,14 +62,56 @@ public class HomeController implements Initializable {
 
     protected SortedState sortedState;
 
+    private boolean isMenuCollapsed = true;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeState();
         initializeLayout();
+
+        try {
+            VBox box = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("drawerPane.fxml")));
+            drawer.setSidePane(box);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        HamburgerBasicCloseTransition transition = new HamburgerBasicCloseTransition(hamburgerMenu);
+        transition.setRate(-1);
+        hamburgerMenu.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            transition.setRate(transition.getRate() * -1);
+            transition.play();
+
+            if(isMenuCollapsed) {
+                TranslateTransition translateTransition=new TranslateTransition(Duration.seconds(0.5), drawer);
+                translateTransition.setByX(130);
+                translateTransition.play();
+                isMenuCollapsed = false;
+            } else {
+                TranslateTransition translateTransition=new TranslateTransition(Duration.seconds(0.5), drawer);
+                translateTransition.setByX(-130);
+                translateTransition.play();
+                isMenuCollapsed = true;
+            }
+
+        });
     }
 
     public void initializeState() {
-        List<Movie> result = MovieAPI.getAllMovies();
+        List<Movie> result = new ArrayList();
+        try {
+            result = MovieAPI.getAllMovies();
+            // save to DB
+            /*
+            WatchlistDao watchlistDao = DaoManager.createDao(connectionSource, WatchlistEntity.class);
+            WatchlistEntity.movieListToWatchlistEntity(result).forEach({ movie ->
+                    watchlistDao.addToWatchlist(movie);
+            });
+
+             */
+        } catch (MovieApiException e){
+            // get DB data
+        }
+
         setMovies(result);
         setMovieList(result);
         sortedState = SortedState.NONE;
@@ -163,6 +219,7 @@ public class HomeController implements Initializable {
         }
 
         List<Movie> movies = getMovies(searchQuery, genre, releaseYear, ratingFrom);
+
         setMovies(movies);
         // applyAllFilters(searchQuery, genre);
 
@@ -179,7 +236,12 @@ public class HomeController implements Initializable {
     }
 
     public List<Movie> getMovies(String searchQuery, Genre genre, String releaseYear, String ratingFrom) {
-        return MovieAPI.getAllMovies(searchQuery, genre, releaseYear, ratingFrom);
+        try{
+            return MovieAPI.getAllMovies(searchQuery, genre, releaseYear, ratingFrom);
+        }catch (MovieApiException e){
+            System.out.println(e.getMessage());
+            return new ArrayList<>();
+        }
     }
 
     public void sortBtnClicked(ActionEvent actionEvent) {

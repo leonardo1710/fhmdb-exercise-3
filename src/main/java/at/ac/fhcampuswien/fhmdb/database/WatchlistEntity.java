@@ -1,7 +1,10 @@
 package at.ac.fhcampuswien.fhmdb.database;
 
+import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+
+import java.util.List;
 
 @DatabaseTable(tableName = "watchlist", daoClass = WatchlistDaoImpl.class)
 public class WatchlistEntity {
@@ -70,5 +73,11 @@ public class WatchlistEntity {
         return "Movie [id=" + id + ", apiId=" + apiId + ", title=" + title + ", description=" + description + ", releaseYear=" + releaseYear + "]";
     }
 
+    public static List<WatchlistEntity> movieListToWatchlistEntity(List<Movie> movies){
+        List<WatchlistEntity> list = movies.stream()
+                .map(movie -> new WatchlistEntity(movie.getId(), movie.getTitle(), movie.getDescription(), movie.getReleaseYear()))
+                .toList();
 
+        return list;
+    }
 }

@@ -31,7 +31,6 @@ public class Database {
 
             WatchlistEntity watchlistEntity = new WatchlistEntity("tt1234567", "Test Movie", "Test Description", 2021);
 
-
             watchlistDao.addToWatchlist(watchlistEntity);
 
             WatchlistEntity watchlistEntityFromDb = watchlistDao.queryForId(watchlistEntity.getId());
@@ -44,6 +43,7 @@ public class Database {
             watchlistDao.removeFromWatchlist(watchlistEntityFromDb);
 
             System.out.println(watchlistDao.queryForId(watchlistEntity.getId()));
+            dropTables();
         } catch (SQLException e) {
             e.printStackTrace();
         }

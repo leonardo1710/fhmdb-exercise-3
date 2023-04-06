@@ -49,11 +49,11 @@ public class MovieAPI {
         return url.toString();
     }
 
-    public static List<Movie> getAllMovies() {
+    public static List<Movie> getAllMovies() throws MovieApiException {
         return getAllMovies(null, null, null, null);
     }
 
-    public static List<Movie> getAllMovies(String query, Genre genre, String releaseYear, String ratingFrom){
+    public static List<Movie> getAllMovies(String query, Genre genre, String releaseYear, String ratingFrom) throws MovieApiException{
         String url = buildUrl(query, genre, releaseYear, ratingFrom);
         Request request = new Request.Builder()
                 .url(url)
@@ -68,9 +68,9 @@ public class MovieAPI {
 
             return Arrays.asList(movies);
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            //System.err.println(e.getMessage());
+            throw new MovieApiException(e.getMessage());
         }
-        return new ArrayList<>();
     }
 
     public Movie requestMovieById(UUID id){

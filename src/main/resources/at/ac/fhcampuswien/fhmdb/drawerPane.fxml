@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" spacing="10.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <JFXButton fx:id="homeBtn" prefHeight="25.0" prefWidth="130.0" text="Home" />
+      <JFXButton fx:id="watchlistBtn" prefWidth="130.0" text="Watchlist" />
+      <JFXButton fx:id="aboutBtn" prefWidth="130.0" text="About" />
+   </children>
+</VBox>
