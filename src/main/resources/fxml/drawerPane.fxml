@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:controller="at.ac.fhcampuswien.fhmdb.controllers.DrawerController"
+ xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <JFXButton fx:id="homeBtn" onAction="#openHome" prefHeight="25.0" prefWidth="130.0" text="Home" />
+      <JFXButton fx:id="watchlistBtn" onAction="#openWatchlist" prefWidth="130.0" text="Watchlist" />
+      <JFXButton fx:id="aboutBtn" prefWidth="130.0" text="About" />
+   </children>
+</VBox>
