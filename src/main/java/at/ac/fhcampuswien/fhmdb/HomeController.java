@@ -1,9 +1,11 @@
 package at.ac.fhcampuswien.fhmdb;
 
+import at.ac.fhcampuswien.fhmdb.ClickEventHandler;
 import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
 import at.ac.fhcampuswien.fhmdb.api.MovieApiException;
-import at.ac.fhcampuswien.fhmdb.database.WatchlistDao;
-import at.ac.fhcampuswien.fhmdb.database.WatchlistEntity;
+import at.ac.fhcampuswien.fhmdb.controllers.BaseController;
+import at.ac.fhcampuswien.fhmdb.controllers.SceneLoader;
+import at.ac.fhcampuswien.fhmdb.database.*;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.SortedState;
@@ -28,7 +30,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class HomeController implements Initializable {
+public class HomeController extends BaseController implements Initializable, ClickEventHandler {
     @FXML
     public JFXButton searchBtn;
 
@@ -71,6 +73,11 @@ public class HomeController implements Initializable {
         try {
             VBox box = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("drawerPane.fxml")));
             drawer.setSidePane(box);
+
+            box.getChildren().stream().filter(node -> node instanceof JFXButton).forEach(node -> {
+                JFXButton btn = (JFXButton) node;
+                btn.setOnAction(this::handleClick);
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -96,6 +103,27 @@ public class HomeController implements Initializable {
         });
     }
 
+    private void handleClick(ActionEvent actionEvent) {
+        if (actionEvent.getSource() instanceof JFXButton){
+            JFXButton btn = (JFXButton) actionEvent.getSource();
+            try {
+                switch (btn.getId()) {
+                    case "homeBtn":
+                        SceneLoader.getInstance(stage, "home", "Home").start();
+                        break;
+                    case "watchlistBtn":
+                        SceneLoader.getInstance(stage, "watchlist-view.fxml", "Home").start();
+                        break;
+                    case "aboutBtn":
+                        SceneLoader.getInstance(stage, "home", "Home").start();
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void initializeState() {
         List<Movie> result = new ArrayList();
         try {
@@ -119,7 +147,7 @@ public class HomeController implements Initializable {
 
     public void initializeLayout() {
         movieListView.setItems(observableMovies);   // set the items of the listview to the observable list
-        movieListView.setCellFactory(movieListView -> new MovieCell()); // apply custom cells to the listview
+        movieListView.setCellFactory(movieListView -> new MovieCell(this)); // apply custom cells to the listview
 
         // genre combobox
         Object[] genres = Genre.values();   // get all genres
@@ -279,5 +307,16 @@ public class HomeController implements Initializable {
         return movies.stream()
                 .filter(movie -> movie.getReleaseYear() >= startYear && movie.getReleaseYear() <= endYear)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void onClick(Movie movie) {
+        WatchlistRepository repository = new WatchlistRepository();
+        WatchlistEntity watchlistEntity = new WatchlistEntity(movie.getId(), movie.getTitle(), movie.getDescription(), movie.getReleaseYear());
+        try {
+            repository.addToWatchlist(watchlistEntity);
+        } catch (DataBaseException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -80,4 +80,8 @@ public class WatchlistEntity {
 
         return list;
     }
+
+    public WatchlistEntity movieToWatchlistEntity(Movie movie) {
+        return new WatchlistEntity(movie.getId(), movie.getTitle(), movie.getDescription(), movie.getReleaseYear());
+    }
 }

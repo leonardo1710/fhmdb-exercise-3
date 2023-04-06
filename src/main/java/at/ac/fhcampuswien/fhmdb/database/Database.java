@@ -8,13 +8,33 @@ import java.sql.SQLException;
 
 public class Database {
     private static final String DB_URL = "jdbc:h2:mem:fhmdb";
-
     public static final String user = "admin";
-    public static final String pass = "admin";
+    public static final String pass = "pass";
 
     private static ConnectionSource connectionSource;
+    private static Database instance;
 
-    public static ConnectionSource getConnectionSource() {
+    private final WatchlistDao watchlistDao;
+
+    private Database() throws DataBaseException {
+        try {
+            createConnectionSource();
+            watchlistDao = DaoManager.createDao(connectionSource, WatchlistEntity.class);
+            createTables();
+        } catch (SQLException e) {
+            throw new DataBaseException(e.getMessage());
+        }
+    }
+
+    // get singleton database instance
+    public static Database getInstance() throws DataBaseException {
+        if (instance == null) {
+            instance = new Database();
+        }
+        return instance;
+    }
+
+    public static ConnectionSource getConnectionSource() throws SQLException {
         if (connectionSource == null) {
             createConnectionSource();
         }
@@ -22,9 +42,6 @@ public class Database {
     }
 
     public static void initDatabase() {
-        createConnectionSource();
-        createTables();
-
         // test the db
         try{
             WatchlistDao watchlistDao = DaoManager.createDao(connectionSource, WatchlistEntity.class);
@@ -52,12 +69,8 @@ public class Database {
         closeConnectionSource();
     }
 
-    private static void createConnectionSource() {
-        try {
-            connectionSource = new JdbcConnectionSource(DB_URL, user, pass);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    private static void createConnectionSource() throws SQLException {
+        connectionSource = new JdbcConnectionSource(DB_URL, user, pass);
     }
 
     public static void closeConnectionSource(){
@@ -70,20 +83,15 @@ public class Database {
         }
     }
 
-    private static void createTables() {
-        try {
-            TableUtils.createTableIfNotExists(connectionSource, WatchlistEntity.class);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    private static void createTables() throws SQLException {
+        TableUtils.createTableIfNotExists(connectionSource, WatchlistEntity.class);
     }
 
-    private static void dropTables() {
-        try {
-            TableUtils.dropTable(connectionSource, WatchlistEntity.class, true);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    private static void dropTables() throws SQLException {
+        TableUtils.dropTable(connectionSource, WatchlistEntity.class, true);
     }
 
+    public WatchlistDao getWatchlistDao() {
+        return watchlistDao;
+    }
 }

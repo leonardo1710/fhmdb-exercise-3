@@ -14,7 +14,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="331.0" prefWidth="570.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.fhcampuswien.fhmdb.HomeController">
+<AnchorPane
+        prefHeight="331.0" prefWidth="570.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.fhcampuswien.fhmdb.HomeController">
    <children>
       <BorderPane layoutX="76.0" prefHeight="45" style="-fx-background-color: black;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <left>
@@ -33,6 +34,9 @@
          <padding>
             <Insets left="10.0" right="10.0" top="10.0" />
          </padding>
+      </BorderPane>
+      <BorderPane fx:id="mainPane">
+
       </BorderPane>
       <VBox minHeight="575.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="45.0">
          <HBox spacing="5.0" styleClass="background-black" stylesheets="@styles.css">
@@ -54,87 +58,5 @@
          <JFXListView fx:id="movieListView" stylesheets="@styles.css" VBox.vgrow="ALWAYS" />
       </VBox>
       <JFXDrawer fx:id="drawer" prefWidth="130.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
-
-      <!--
-      <VBox layoutX="15.0" prefHeight="331.0" prefWidth="570.0">
-         <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;">
-            <left>
-               <Label style="-fx-background-color: F5C518;" text="FHMDb" BorderPane.alignment="CENTER">
-                  <font>
-                     <Font name="Calibri Bold" size="24.0" />
-                  </font>
-                  <padding>
-                     <Insets left="2.0" right="2.0" />
-                  </padding>
-               </Label>
-            </left>
-            <right>
-               <JFXHamburger fx:id="hamburgerMenu" alignment="TOP_RIGHT" stylesheets="@styles.css" BorderPane.alignment="CENTER" />
-            </right>
-            <center>
-               <Label styleClass="text-white" stylesheets="@styles.css" text="Welcome to FHMDb!" BorderPane.alignment="CENTER" />
-            </center>
-            <padding>
-               <Insets left="10.0" right="10.0" top="10.0" />
-            </padding>
-         </BorderPane>
-
-         <AnchorPane fx:id="drawerPane" prefHeight="454.0" prefWidth="174.0" style="-fx-background-color: White;" AnchorPane.leftAnchor="570.0">
-            <children>
-               <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
-                  <children>
-                     <JFXButton alignment="BASELINE_LEFT" buttonType="RAISED" prefHeight="38.0" prefWidth="179.0" text="Dashboard">
-                        <font>
-                           <Font size="16.0" />
-                        </font>
-                     </JFXButton>
-                     <JFXButton alignment="BASELINE_LEFT" buttonType="RAISED" layoutX="10.0" layoutY="10.0" prefHeight="38.0" prefWidth="179.0" text="Add New">
-                        <font>
-                           <Font size="16.0" />
-                        </font>
-                     </JFXButton>
-                     <JFXButton alignment="BASELINE_LEFT" buttonType="RAISED" layoutX="10.0" layoutY="58.0" prefHeight="38.0" prefWidth="179.0" text="Data">
-                        <font>
-                           <Font size="16.0" />
-                        </font>
-                     </JFXButton>
-                     <JFXButton alignment="BASELINE_LEFT" buttonType="RAISED" layoutX="10.0" layoutY="106.0" prefHeight="38.0" prefWidth="179.0" text="User">
-                        <font>
-                           <Font size="16.0" />
-                        </font>
-                     </JFXButton>
-                     <JFXButton alignment="BASELINE_LEFT" buttonType="RAISED" layoutX="10.0" layoutY="154.0" prefHeight="38.0" prefWidth="179.0" text="Setting">
-                        <font>
-                           <Font size="16.0" />
-                        </font>
-                     </JFXButton>
-                     <JFXButton alignment="BASELINE_LEFT" buttonType="RAISED" layoutX="10.0" layoutY="202.0" prefHeight="38.0" prefWidth="179.0" text="BackUp">
-                        <font>
-                           <Font size="16.0" />
-                        </font>
-                     </JFXButton>
-                  </children>
-               </VBox>
-            </children>
-         </AnchorPane>
-         <HBox spacing="5.0" styleClass="background-black" stylesheets="@styles.css">
-            <children>
-               <JFXButton fx:id="sortBtn" onAction="#sortBtnClicked" styleClass="background-yellow" stylesheets="@styles.css" text="Sort" />
-               <TextField fx:id="searchField" prefHeight="25.0" prefWidth="170.0" promptText="Search FHMDb" />
-               <JFXComboBox fx:id="genreComboBox" focusColor="#f5c518" styleClass="filter-combo-box" stylesheets="@styles.css" />
-               <JFXComboBox fx:id="releaseYearComboBox" focusColor="#f5c518" styleClass="filter-combo-box" stylesheets="@styles.css" />
-               <JFXComboBox fx:id="ratingFromComboBox" focusColor="#f5c518" styleClass="filter-combo-box" stylesheets="@styles.css" />
-               <JFXButton fx:id="searchBtn" onAction="#searchBtnClicked" styleClass="background-yellow" stylesheets="@styles.css" text="Filter" />
-            </children>
-            <VBox.margin>
-               <Insets />
-            </VBox.margin>
-            <padding>
-               <Insets bottom="20.0" left="10.0" top="20.0" />
-            </padding>
-         </HBox>
-         <JFXListView fx:id="movieListView" stylesheets="@styles.css" VBox.vgrow="ALWAYS" />
-      </VBox>
-      -->
    </children>
 </AnchorPane>

@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb.ui;
 
+import at.ac.fhcampuswien.fhmdb.ClickEventHandler;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.jfoenix.controls.JFXButton;
 import javafx.geometry.Insets;
@@ -21,7 +22,7 @@ public class MovieCell extends ListCell<Movie> {
     private final VBox layout = new VBox(header, detail, genre);
     private boolean collapsedDetails = true;
 
-    public MovieCell() {
+    public MovieCell(ClickEventHandler addToWatchlistClicked) {
         super();
         // color scheme
         detailBtn.setStyle("-fx-background-color: #f5c518;");
@@ -53,6 +54,10 @@ public class MovieCell extends ListCell<Movie> {
                 detailBtn.setText("Show Details");
             }
             setGraphic(layout);
+        });
+
+        watchlistBtn.setOnMouseClicked(mouseEvent -> {
+            addToWatchlistClicked.onClick(getItem());
         });
     }
 
