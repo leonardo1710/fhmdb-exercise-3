@@ -1,7 +1,5 @@
 package at.ac.fhcampuswien.fhmdb.database;
 
-import javafx.scene.chart.PieChart;
-
 import java.util.List;
 
 public class WatchlistRepository {
@@ -18,8 +16,11 @@ public class WatchlistRepository {
     public void addToWatchlist(WatchlistEntity movie) throws DataBaseException {
         try {
             WatchlistDao watchlistDao = Database.getInstance().getWatchlistDao();
-            watchlistDao.create(movie);
+            if(watchlistDao.findByApiId(movie.getApiId()).size() == 0) {
+                watchlistDao.create(movie);
+            }
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DataBaseException("Error while adding to watchlist");
         }
     }

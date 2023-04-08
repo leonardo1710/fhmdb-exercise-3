@@ -2,7 +2,6 @@ package at.ac.fhcampuswien.fhmdb.ui;
 
 import at.ac.fhcampuswien.fhmdb.ClickEventHandler;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistEntity;
-import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.jfoenix.controls.JFXButton;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,25 +15,28 @@ import java.util.stream.Collectors;
 public class WatchlistCell extends ListCell<WatchlistEntity> {
     private final Label title = new Label();
     private final Label description = new Label();
+    private final Label genre = new Label();
     private final JFXButton detailBtn = new JFXButton("Show Details");
     private final JFXButton removeBtn = new JFXButton("Remove");
     private final HBox header = new HBox(title, detailBtn, removeBtn);
-    private final VBox layout = new VBox(header, description);
+    private final VBox layout = new VBox(header, description, genre);
     private boolean collapsedDetails = true;
 
     public WatchlistCell(ClickEventHandler removeFromWatchlistClick) {
         super();
         // color scheme
         detailBtn.setStyle("-fx-background-color: #f5c518;");
+        HBox.setMargin(detailBtn, new Insets(0, 10, 0, 10));
         removeBtn.setStyle("-fx-background-color: #f5c518;");
         title.getStyleClass().add("text-yellow");
         description.getStyleClass().add("text-white");
+        genre.getStyleClass().add("text-white");
+        genre.setStyle("-fx-font-style: italic");
         layout.setBackground(new Background(new BackgroundFill(Color.web("#454545"), null, null)));
         header.setAlignment(Pos.CENTER_LEFT);
         header.setHgrow(title, Priority.ALWAYS);
         header.setHgrow(detailBtn, Priority.ALWAYS);
         title.setMaxWidth(Double.MAX_VALUE);
-        //detailBtn.setMaxWidth(Double.MAX_VALUE);
 
         // layout
         title.fontProperty().set(title.getFont().font(20));
@@ -62,34 +64,16 @@ public class WatchlistCell extends ListCell<WatchlistEntity> {
     private VBox getDetails() {
         VBox details = new VBox();
         Label releaseYear = new Label("Release Year: " + getItem().getReleaseYear());
-        /*
         Label length = new Label("Length: " + getItem().getLengthInMinutes() + " minutes");
-        Label rating = new Label("Rating: " + getItem().getRating() + "/10");
+        Label rating = new Label("Rating: " + getItem().getRating());
 
-        Label directors = new Label("Directors: " + String.join(", ", getItem().getDirectors()));
-        Label writers = new Label("Writers: " + String.join(", ", getItem().getWriters()));
-        Label mainCast = new Label("Main Cast: " + String.join(", ", getItem().getMainCast()));
-
-
-         */
         releaseYear.getStyleClass().add("text-white");
-        /*
         length.getStyleClass().add("text-white");
         rating.getStyleClass().add("text-white");
-        directors.getStyleClass().add("text-white");
-        writers.getStyleClass().add("text-white");
-        mainCast.getStyleClass().add("text-white");
-*/
-        details.getChildren().add(releaseYear);
 
-         /*
+        details.getChildren().add(releaseYear);
         details.getChildren().add(rating);
         details.getChildren().add(length);
-        details.getChildren().add(directors);
-        details.getChildren().add(writers);
-        details.getChildren().add(mainCast);
-
-          */
         return details;
     }
     @Override
@@ -110,6 +94,11 @@ public class WatchlistCell extends ListCell<WatchlistEntity> {
 
             description.setMaxWidth(this.getScene().getWidth() - 30);
 
+            String genres = watchlistEntity.getGenres()
+                    .stream()
+                    .map(Enum::toString)
+                    .collect(Collectors.joining(", "));
+            genre.setText(genres);
             setGraphic(layout);
         }
     }

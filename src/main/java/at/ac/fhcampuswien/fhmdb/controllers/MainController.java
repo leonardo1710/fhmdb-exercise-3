@@ -19,7 +19,6 @@ public class MainController {
     public static final String WATCHLIST_FXML = "/fxml/watchlist.fxml";
     public static final String HOME_FXML = "/fxml/movie-list.fxml";
 
-
     @FXML
     public JFXHamburger hamburgerMenu;
 
@@ -40,11 +39,17 @@ public class MainController {
         hamburgerMenu.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             toggleMenuDrawer();
         });
+        // start with home view
+        navigateToMovielist();
+    }
+
+    private void toggleHamburgerTransitionState(){
+        transition.setRate(transition.getRate() * -1);
+        transition.play();
     }
 
     private void toggleMenuDrawer(){
-        transition.setRate(transition.getRate() * -1);
-        transition.play();
+        toggleHamburgerTransitionState();
 
         if(isMenuCollapsed) {
             TranslateTransition translateTransition=new TranslateTransition(Duration.seconds(0.5), drawer);
@@ -61,12 +66,14 @@ public class MainController {
 
     public void setContent(String fxmlPath){
         FXMLLoader loader = new FXMLLoader(MainController.class.getResource(fxmlPath));
-        //FXMLLoader loader = new FXMLLoader(MainController.class.getClassLoader().getResource(fxmlPath));
         try {
             mainPane.setCenter(loader.load());
-            toggleMenuDrawer();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        if(!isMenuCollapsed){
+            toggleMenuDrawer();
         }
     }
 
@@ -104,12 +111,12 @@ public class MainController {
     }
 
     @FXML
-    public void openWatchlist() {
+    public void navigateToWatchlist() {
         setContent(WATCHLIST_FXML);
     }
 
     @FXML
-    public void openHome() {
+    public void navigateToMovielist() {
         setContent(HOME_FXML);
     }
 }

@@ -42,11 +42,13 @@ public class Database {
     }
 
     public static void initDatabase() {
+        /*
         // test the db
         try{
+
             WatchlistDao watchlistDao = DaoManager.createDao(connectionSource, WatchlistEntity.class);
 
-            WatchlistEntity watchlistEntity = new WatchlistEntity("tt1234567", "Test Movie", "Test Description", 2021);
+            WatchlistEntity watchlistEntity = new WatchlistEntity("tt1234567", "Test Movie", "Test Description", 2021, genres);
 
             watchlistDao.addToWatchlist(watchlistEntity);
 
@@ -61,10 +63,14 @@ public class Database {
 
             System.out.println(watchlistDao.queryForId(watchlistEntity.getId()));
             dropTables();
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+
+             */
 
         closeConnectionSource();
     }

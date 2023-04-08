@@ -26,6 +26,8 @@ public class MovieCell extends ListCell<Movie> {
         super();
         // color scheme
         detailBtn.setStyle("-fx-background-color: #f5c518;");
+        // set margin of detailBtn
+        HBox.setMargin(detailBtn, new Insets(0, 10, 0, 10));
         watchlistBtn.setStyle("-fx-background-color: #f5c518;");
         title.getStyleClass().add("text-yellow");
         detail.getStyleClass().add("text-white");

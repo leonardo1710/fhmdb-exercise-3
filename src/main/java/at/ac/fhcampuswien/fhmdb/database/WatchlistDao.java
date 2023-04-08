@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface WatchlistDao extends Dao<WatchlistEntity, Long> {
-    List<WatchlistEntity> findByName(String name) throws SQLException;
+    List<WatchlistEntity> findByApiId(String apiId) throws SQLException;
 
     long addToWatchlist(WatchlistEntity movie) throws SQLException;
 

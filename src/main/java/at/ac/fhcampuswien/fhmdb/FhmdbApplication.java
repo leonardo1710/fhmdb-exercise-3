@@ -19,15 +19,6 @@ public class FhmdbApplication extends Application {
         stage.setTitle("FHMDb!");
         stage.setScene(scene);
         stage.show();
-
-        /*
-        try {
-            Database.initDatabase();
-        }  catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-         */
     }
 
     public static void main(String[] args) {

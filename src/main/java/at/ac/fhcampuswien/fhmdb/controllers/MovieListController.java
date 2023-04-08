@@ -26,7 +26,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class MovieListController implements Initializable, ClickEventHandler {
+public class MovieListController implements Initializable {
     @FXML
     public JFXButton searchBtn;
 
@@ -54,27 +54,39 @@ public class MovieListController implements Initializable, ClickEventHandler {
 
     protected SortedState sortedState;
 
+    private ClickEventHandler onAddToWatchlistClicked = (o) -> {
+        if (o instanceof Movie) {
+            Movie movie = (Movie) o;
+            WatchlistRepository repository = new WatchlistRepository();
+            WatchlistEntity watchlistEntity = new WatchlistEntity(
+                    movie.getId(),
+                    movie.getTitle(),
+                    movie.getDescription(),
+                    movie.getReleaseYear(),
+                    movie.getGenres(),
+                    movie.getImgUrl(),
+                    movie.getLengthInMinutes(),
+                    movie.getRating());
+            try {
+                repository.addToWatchlist(watchlistEntity);
+            } catch (DataBaseException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeState();
         initializeLayout();
-
     }
 
     public void initializeState() {
         List<Movie> result = new ArrayList();
         try {
             result = MovieAPI.getAllMovies();
-            // save to DB
-            /*
-            WatchlistDao watchlistDao = DaoManager.createDao(connectionSource, WatchlistEntity.class);
-            WatchlistEntity.movieListToWatchlistEntity(result).forEach({ movie ->
-                    watchlistDao.addToWatchlist(movie);
-            });
-
-             */
         } catch (MovieApiException e){
-            // get DB data
+            e.printStackTrace();
         }
 
         setMovies(result);
@@ -84,7 +96,7 @@ public class MovieListController implements Initializable, ClickEventHandler {
 
     public void initializeLayout() {
         movieListView.setItems(observableMovies);   // set the items of the listview to the observable list
-        movieListView.setCellFactory(movieListView -> new MovieCell(this)); // apply custom cells to the listview
+        movieListView.setCellFactory(movieListView -> new MovieCell(onAddToWatchlistClicked)); // apply custom cells to the listview
 
         // genre combobox
         Object[] genres = Genre.values();   // get all genres
@@ -134,7 +146,6 @@ public class MovieListController implements Initializable, ClickEventHandler {
             sortedState = SortedState.DESCENDING;
         }
     }
-
 
     public List<Movie> filterByQuery(List<Movie> movies, String query){
         if(query == null || query.isEmpty()) return movies;
@@ -213,20 +224,5 @@ public class MovieListController implements Initializable, ClickEventHandler {
 
     public void sortBtnClicked(ActionEvent actionEvent) {
         sortMovies();
-    }
-
-    @Override
-    public void onClick(Object o) {
-        if(o instanceof Movie) {
-            Movie movie = (Movie) o;
-            WatchlistRepository repository = new WatchlistRepository();
-            WatchlistEntity watchlistEntity = new WatchlistEntity(movie.getId(), movie.getTitle(), movie.getDescription(), movie.getReleaseYear());
-            try {
-                repository.addToWatchlist(watchlistEntity);
-            } catch (DataBaseException e) {
-                e.printStackTrace();
-            }
-        }
-
     }
 }

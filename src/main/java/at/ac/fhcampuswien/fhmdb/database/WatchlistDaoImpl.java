@@ -12,8 +12,8 @@ public class WatchlistDaoImpl extends BaseDaoImpl<WatchlistEntity, Long> impleme
     }
 
     @Override
-    public List<WatchlistEntity> findByName(String name) throws SQLException {
-        return super.queryForEq("title", name);
+    public List<WatchlistEntity> findByApiId(String apiId) throws SQLException {
+        return super.queryForEq("apiId", apiId);
     }
 
     @Override
