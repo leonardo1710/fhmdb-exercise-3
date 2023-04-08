@@ -45,6 +45,9 @@ public class MovieListController implements Initializable, ClickEventHandler {
     @FXML
     public JFXComboBox ratingFromComboBox;
 
+    @FXML
+    public JFXButton sortBtn;
+
     public List<Movie> allMovies;
 
     protected ObservableList<Movie> observableMovies = FXCollections.observableArrayList();
@@ -213,13 +216,17 @@ public class MovieListController implements Initializable, ClickEventHandler {
     }
 
     @Override
-    public void onClick(Movie movie) {
-        WatchlistRepository repository = new WatchlistRepository();
-        WatchlistEntity watchlistEntity = new WatchlistEntity(movie.getId(), movie.getTitle(), movie.getDescription(), movie.getReleaseYear());
-        try {
-            repository.addToWatchlist(watchlistEntity);
-        } catch (DataBaseException e) {
-            e.printStackTrace();
+    public void onClick(Object o) {
+        if(o instanceof Movie) {
+            Movie movie = (Movie) o;
+            WatchlistRepository repository = new WatchlistRepository();
+            WatchlistEntity watchlistEntity = new WatchlistEntity(movie.getId(), movie.getTitle(), movie.getDescription(), movie.getReleaseYear());
+            try {
+                repository.addToWatchlist(watchlistEntity);
+            } catch (DataBaseException e) {
+                e.printStackTrace();
+            }
         }
+
     }
 }

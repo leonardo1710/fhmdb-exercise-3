@@ -7,7 +7,7 @@ import com.j256.ormlite.table.TableUtils;
 import java.sql.SQLException;
 
 public class Database {
-    private static final String DB_URL = "jdbc:h2:mem:fhmdb";
+    private static final String DB_URL = "jdbc:h2:./db/fhmdb"; // in memory: jdbc:h2:mem:fhmdb
     public static final String user = "admin";
     public static final String pass = "pass";
 

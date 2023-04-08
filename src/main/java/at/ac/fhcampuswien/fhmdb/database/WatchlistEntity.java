@@ -72,16 +72,4 @@ public class WatchlistEntity {
     public String toString() {
         return "Movie [id=" + id + ", apiId=" + apiId + ", title=" + title + ", description=" + description + ", releaseYear=" + releaseYear + "]";
     }
-
-    public static List<WatchlistEntity> movieListToWatchlistEntity(List<Movie> movies){
-        List<WatchlistEntity> list = movies.stream()
-                .map(movie -> new WatchlistEntity(movie.getId(), movie.getTitle(), movie.getDescription(), movie.getReleaseYear()))
-                .toList();
-
-        return list;
-    }
-
-    public WatchlistEntity movieToWatchlistEntity(Movie movie) {
-        return new WatchlistEntity(movie.getId(), movie.getTitle(), movie.getDescription(), movie.getReleaseYear());
-    }
 }

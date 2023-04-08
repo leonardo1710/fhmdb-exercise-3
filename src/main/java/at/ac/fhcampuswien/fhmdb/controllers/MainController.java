@@ -4,7 +4,6 @@ import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import javafx.animation.TranslateTransition;
-import javafx.beans.value.ObservableBooleanValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.input.MouseEvent;
@@ -23,9 +22,6 @@ public class MainController {
 
     @FXML
     public JFXHamburger hamburgerMenu;
-
-    @FXML
-    public JFXButton sortBtn;
 
     @FXML
     private JFXDrawer drawer;

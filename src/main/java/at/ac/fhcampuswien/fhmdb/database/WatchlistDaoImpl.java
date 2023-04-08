@@ -25,4 +25,9 @@ public class WatchlistDaoImpl extends BaseDaoImpl<WatchlistEntity, Long> impleme
     public boolean removeFromWatchlist(WatchlistEntity movie) throws SQLException {
         return super.delete(movie) == 1;
     }
+
+    @Override
+    public List<WatchlistEntity> getAll() throws SQLException {
+        return super.queryForAll();
+    }
 }

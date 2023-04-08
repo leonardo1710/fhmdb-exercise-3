@@ -11,4 +11,6 @@ public interface WatchlistDao extends Dao<WatchlistEntity, Long> {
     long addToWatchlist(WatchlistEntity movie) throws SQLException;
 
     boolean removeFromWatchlist(WatchlistEntity movie) throws SQLException;
+
+    List<WatchlistEntity> getAll() throws SQLException;
 }
