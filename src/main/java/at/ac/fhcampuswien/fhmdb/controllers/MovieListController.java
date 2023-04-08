@@ -54,7 +54,7 @@ public class MovieListController implements Initializable {
 
     protected SortedState sortedState;
 
-    private ClickEventHandler onAddToWatchlistClicked = (o) -> {
+    private final ClickEventHandler onAddToWatchlistClicked = (o) -> {
         if (o instanceof Movie) {
             Movie movie = (Movie) o;
             WatchlistRepository repository = new WatchlistRepository();
@@ -82,7 +82,7 @@ public class MovieListController implements Initializable {
     }
 
     public void initializeState() {
-        List<Movie> result = new ArrayList();
+        List<Movie> result = new ArrayList<>();
         try {
             result = MovieAPI.getAllMovies();
         } catch (MovieApiException e){

@@ -25,7 +25,7 @@ public class WatchlistController implements Initializable {
 
     protected ObservableList<WatchlistEntity> observableWatchlist = FXCollections.observableArrayList();
 
-    private ClickEventHandler onRemoveFromWatchlistClicked = (o) -> {
+    private final ClickEventHandler onRemoveFromWatchlistClicked = (o) -> {
         if (o instanceof WatchlistEntity) {
             WatchlistEntity watchlistEntity = (WatchlistEntity) o;
             WatchlistRepository watchlistRepository = new WatchlistRepository();

@@ -4,10 +4,9 @@ import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import okhttp3.*;
 import com.google.gson.Gson;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class MovieAPI {
@@ -62,7 +61,7 @@ public class MovieAPI {
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
-            String responseBody = response.body().string();
+            String responseBody = Objects.requireNonNull(response.body()).string();
             Gson gson = new Gson();
             Movie[] movies = gson.fromJson(responseBody, Movie[].class);
 
@@ -81,7 +80,7 @@ public class MovieAPI {
 
         try (Response response = client.newCall(request).execute()) {
             Gson gson = new Gson();
-            return gson.fromJson(response.body().string(), Movie.class);
+            return gson.fromJson(Objects.requireNonNull(response.body()).string(), Movie.class);
         } catch (Exception e) {
             System.err.println(this.getClass() + ": http status not ok");
         }
