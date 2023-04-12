@@ -1,14 +1,13 @@
 package at.ac.fhcampuswien.fhmdb.database;
 
-import at.ac.fhcampuswien.fhmdb.database.WatchlistDaoImpl;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import java.util.Arrays;
 import java.util.List;
 
-@DatabaseTable(tableName = "watchlist", daoClass = WatchlistDaoImpl.class)
-public class WatchlistEntity {
+@DatabaseTable(tableName = "watchlist", daoClass = WatchlistMovieDao.class)
+public class WatchlistMovieEntity {
     @DatabaseField(generatedId = true)
     private long id;
 
@@ -36,9 +35,9 @@ public class WatchlistEntity {
     @DatabaseField()
     private double rating;
 
-    public WatchlistEntity(){}
+    public WatchlistMovieEntity(){}
 
-    public WatchlistEntity(String apiId, String title, String description, int releaseYear, List<Genre> genres, String imgUrl, int lengthInMinutes, double rating) {
+    public WatchlistMovieEntity(String apiId, String title, String description, int releaseYear, List<Genre> genres, String imgUrl, int lengthInMinutes, double rating) {
         this.apiId = apiId;
         this.title = title;
         this.description = description;

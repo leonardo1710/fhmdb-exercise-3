@@ -14,12 +14,12 @@ public class Database {
     private static ConnectionSource connectionSource;
     private static Database instance;
 
-    private final WatchlistDao watchlistDao;
+    private final WatchlistMovieDao watchlistMovieDao;
 
     private Database() throws DataBaseException {
         try {
             createConnectionSource();
-            watchlistDao = DaoManager.createDao(connectionSource, WatchlistEntity.class);
+            watchlistMovieDao = DaoManager.createDao(connectionSource, WatchlistMovieEntity.class);
             createTables();
         } catch (SQLException e) {
             throw new DataBaseException(e.getMessage());
@@ -34,70 +34,45 @@ public class Database {
         return instance;
     }
 
-    public static ConnectionSource getConnectionSource() throws SQLException {
+    public static ConnectionSource getConnectionSource() throws DataBaseException {
         if (connectionSource == null) {
             createConnectionSource();
         }
         return connectionSource;
     }
 
-    public static void initDatabase() {
-        /*
-        // test the db
-        try{
-
-            WatchlistDao watchlistDao = DaoManager.createDao(connectionSource, WatchlistEntity.class);
-
-            WatchlistEntity watchlistEntity = new WatchlistEntity("tt1234567", "Test Movie", "Test Description", 2021, genres);
-
-            watchlistDao.addToWatchlist(watchlistEntity);
-
-            WatchlistEntity watchlistEntityFromDb = watchlistDao.queryForId(watchlistEntity.getId());
-            WatchlistEntity test2 = watchlistDao.findByName("Test Movie").get(0);
-
-            System.out.println(watchlistEntityFromDb.getTitle());
-
-            System.out.println(test2.getTitle());
-
-            watchlistDao.removeFromWatchlist(watchlistEntityFromDb);
-
-            System.out.println(watchlistDao.queryForId(watchlistEntity.getId()));
-            dropTables();
-
-
+    private static void createConnectionSource() throws DataBaseException {
+        try {
+            connectionSource = new JdbcConnectionSource(DB_URL, user, pass);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataBaseException(e.getMessage());
         }
 
-
-             */
-
-        closeConnectionSource();
     }
 
-    private static void createConnectionSource() throws SQLException {
-        connectionSource = new JdbcConnectionSource(DB_URL, user, pass);
-    }
-
-    public static void closeConnectionSource(){
+    // close the db connection
+    public static void closeConnectionSource() throws DataBaseException {
         if(connectionSource != null){
             try {
                 connectionSource.close();
             } catch (Exception e) {
                 e.printStackTrace();
+                throw new DataBaseException(e.getMessage());
             }
         }
     }
 
+    // creates the tables in the database
     private static void createTables() throws SQLException {
-        TableUtils.createTableIfNotExists(connectionSource, WatchlistEntity.class);
+        TableUtils.createTableIfNotExists(connectionSource, WatchlistMovieEntity.class);
     }
 
+    // removes tables from database
     private static void dropTables() throws SQLException {
-        TableUtils.dropTable(connectionSource, WatchlistEntity.class, true);
+        TableUtils.dropTable(connectionSource, WatchlistMovieEntity.class, true);
     }
 
-    public WatchlistDao getWatchlistDao() {
-        return watchlistDao;
+    public WatchlistMovieDao getWatchlistDao() {
+        return watchlistMovieDao;
     }
 }

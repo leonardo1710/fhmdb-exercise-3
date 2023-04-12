@@ -4,12 +4,13 @@ import at.ac.fhcampuswien.fhmdb.ClickEventHandler;
 import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
 import at.ac.fhcampuswien.fhmdb.api.MovieApiException;
 import at.ac.fhcampuswien.fhmdb.database.DataBaseException;
-import at.ac.fhcampuswien.fhmdb.database.WatchlistEntity;
+import at.ac.fhcampuswien.fhmdb.database.WatchlistMovieEntity;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistRepository;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.SortedState;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
+import at.ac.fhcampuswien.fhmdb.ui.UserDialog;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
@@ -54,11 +55,10 @@ public class MovieListController implements Initializable {
 
     protected SortedState sortedState;
 
-    private final ClickEventHandler onAddToWatchlistClicked = (o) -> {
-        if (o instanceof Movie) {
-            Movie movie = (Movie) o;
-            WatchlistRepository repository = new WatchlistRepository();
-            WatchlistEntity watchlistEntity = new WatchlistEntity(
+    private final ClickEventHandler onAddToWatchlistClicked = (clickedItem) -> {
+        if (clickedItem instanceof Movie) {
+            Movie movie = (Movie) clickedItem;
+            WatchlistMovieEntity watchlistMovieEntity = new WatchlistMovieEntity(
                     movie.getId(),
                     movie.getTitle(),
                     movie.getDescription(),
@@ -68,8 +68,11 @@ public class MovieListController implements Initializable {
                     movie.getLengthInMinutes(),
                     movie.getRating());
             try {
-                repository.addToWatchlist(watchlistEntity);
+                WatchlistRepository repository = new WatchlistRepository();
+                repository.addToWatchlist(watchlistMovieEntity);
             } catch (DataBaseException e) {
+                UserDialog dialog = new UserDialog("Database Error", "Could not add movie to watchlist");
+                dialog.show();
                 e.printStackTrace();
             }
         }
@@ -86,6 +89,8 @@ public class MovieListController implements Initializable {
         try {
             result = MovieAPI.getAllMovies();
         } catch (MovieApiException e){
+            UserDialog dialog = new UserDialog("MovieAPI Error", "Could not load movies from api");
+            dialog.show();
             e.printStackTrace();
         }
 
@@ -218,6 +223,8 @@ public class MovieListController implements Initializable {
             return MovieAPI.getAllMovies(searchQuery, genre, releaseYear, ratingFrom);
         }catch (MovieApiException e){
             System.out.println(e.getMessage());
+            UserDialog dialog = new UserDialog("MovieApi Error", "Could not load movies from api.");
+            dialog.show();
             return new ArrayList<>();
         }
     }

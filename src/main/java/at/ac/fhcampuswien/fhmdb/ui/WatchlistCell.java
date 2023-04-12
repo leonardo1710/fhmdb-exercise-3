@@ -1,7 +1,7 @@
 package at.ac.fhcampuswien.fhmdb.ui;
 
 import at.ac.fhcampuswien.fhmdb.ClickEventHandler;
-import at.ac.fhcampuswien.fhmdb.database.WatchlistEntity;
+import at.ac.fhcampuswien.fhmdb.database.WatchlistMovieEntity;
 import com.jfoenix.controls.JFXButton;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,7 +12,7 @@ import javafx.scene.paint.Color;
 
 import java.util.stream.Collectors;
 
-public class WatchlistCell extends ListCell<WatchlistEntity> {
+public class WatchlistCell extends ListCell<WatchlistMovieEntity> {
     private final Label title = new Label();
     private final Label description = new Label();
     private final Label genre = new Label();
@@ -77,24 +77,24 @@ public class WatchlistCell extends ListCell<WatchlistEntity> {
         return details;
     }
     @Override
-    protected void updateItem(WatchlistEntity watchlistEntity, boolean empty) {
-        super.updateItem(watchlistEntity, empty);
+    protected void updateItem(WatchlistMovieEntity watchlistMovieEntity, boolean empty) {
+        super.updateItem(watchlistMovieEntity, empty);
 
-        if (empty || watchlistEntity == null) {
+        if (empty || watchlistMovieEntity == null) {
             setGraphic(null);
             setText(null);
         } else {
             this.getStyleClass().add("movie-cell");
-            title.setText(watchlistEntity.getTitle());
+            title.setText(watchlistMovieEntity.getTitle());
             description.setText(
-                    watchlistEntity.getDescription() != null
-                            ? watchlistEntity.getDescription()
+                    watchlistMovieEntity.getDescription() != null
+                            ? watchlistMovieEntity.getDescription()
                             : "No description available"
             );
 
             description.setMaxWidth(this.getScene().getWidth() - 30);
 
-            String genres = watchlistEntity.getGenres()
+            String genres = watchlistMovieEntity.getGenres()
                     .stream()
                     .map(Enum::toString)
                     .collect(Collectors.joining(", "));

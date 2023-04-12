@@ -72,7 +72,7 @@ public class MovieAPI {
         }
     }
 
-    public Movie requestMovieById(UUID id){
+    public Movie requestMovieById(UUID id) throws MovieApiException {
         String url = buildUrl(id);
         Request request = new Request.Builder()
                 .url(url)
@@ -82,9 +82,7 @@ public class MovieAPI {
             Gson gson = new Gson();
             return gson.fromJson(Objects.requireNonNull(response.body()).string(), Movie.class);
         } catch (Exception e) {
-            System.err.println(this.getClass() + ": http status not ok");
+            throw new MovieApiException(e.getMessage());
         }
-
-        return null;
     }
 }

@@ -4,40 +4,44 @@ import java.util.List;
 
 public class WatchlistRepository {
 
-    public List<WatchlistEntity> readWatchlist() throws DataBaseException {
+    WatchlistMovieDao dao;
+
+    public WatchlistRepository() throws DataBaseException {
         try {
-            WatchlistDao watchlistDao = Database.getInstance().getWatchlistDao();
-            return watchlistDao.getAll();
+            this.dao = Database.getInstance().getWatchlistDao();
+        } catch (Exception e) {
+            throw new DataBaseException(e.getMessage());
+        }
+    }
+
+    public List<WatchlistMovieEntity> readWatchlist() throws DataBaseException {
+        try {
+            return dao.queryForAll();
         } catch (Exception e) {
             e.printStackTrace();
             throw new DataBaseException("Error while reading watchlist");
         }
     }
-    public void addToWatchlist(WatchlistEntity movie) throws DataBaseException {
+    public void addToWatchlist(WatchlistMovieEntity movie) throws DataBaseException {
         try {
-            WatchlistDao watchlistDao = Database.getInstance().getWatchlistDao();
-            if(watchlistDao.findByApiId(movie.getApiId()).size() == 0) {
-                watchlistDao.create(movie);
-            }
+            dao.createIfNotExists(movie);
         } catch (Exception e) {
             e.printStackTrace();
             throw new DataBaseException("Error while adding to watchlist");
         }
     }
 
-    public void removeFromWatchlist(WatchlistEntity movie) throws DataBaseException {
+    public void removeFromWatchlist(WatchlistMovieEntity movie) throws DataBaseException {
         try {
-            WatchlistDao watchlistDao = Database.getInstance().getWatchlistDao();
-            watchlistDao.delete(movie);
+            dao.delete(movie);
         } catch (Exception e) {
             throw new DataBaseException("Error while removing from watchlist");
         }
     }
 
-    public boolean isOnWatchlist(WatchlistEntity movie) throws DataBaseException {
+    public boolean isOnWatchlist(WatchlistMovieEntity movie) throws DataBaseException {
         try {
-            WatchlistDao watchlistDao = Database.getInstance().getWatchlistDao();
-            return watchlistDao.queryForMatching(movie).size() > 0;
+            return dao.queryForMatching(movie).size() > 0;
         } catch (Exception e) {
             throw new DataBaseException("Error while checking if movie is on watchlist");
         }
