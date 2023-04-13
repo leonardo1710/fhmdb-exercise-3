@@ -1,20 +1,23 @@
 package at.ac.fhcampuswien.fhmdb.database;
 
+import at.ac.fhcampuswien.fhmdb.models.Genre;
+import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Database {
-    private static final String DB_URL = "jdbc:h2:./db/fhmdb"; // in memory: jdbc:h2:mem:fhmdb
+    private static final String DB_URL = "jdbc:h2:file:./db/fhmdb"; // in memory: jdbc:h2:mem:fhmdb
     public static final String user = "admin";
     public static final String pass = "pass";
 
     private static ConnectionSource connectionSource;
     private static Database instance;
 
-    private final WatchlistMovieDao watchlistMovieDao;
+    private final Dao<WatchlistMovieEntity, Long> watchlistMovieDao;
 
     private Database() throws DataBaseException {
         try {
@@ -72,7 +75,7 @@ public class Database {
         TableUtils.dropTable(connectionSource, WatchlistMovieEntity.class, true);
     }
 
-    public WatchlistMovieDao getWatchlistDao() {
+    public Dao<WatchlistMovieEntity, Long> getWatchlistDao() {
         return watchlistMovieDao;
     }
 }

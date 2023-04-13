@@ -6,7 +6,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Arrays;
 import java.util.List;
 
-@DatabaseTable(tableName = "watchlist", daoClass = WatchlistMovieDao.class)
+@DatabaseTable(tableName = "watchlist")
 public class WatchlistMovieEntity {
     @DatabaseField(generatedId = true)
     private long id;

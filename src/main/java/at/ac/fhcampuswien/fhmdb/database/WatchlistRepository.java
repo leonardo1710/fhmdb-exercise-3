@@ -1,10 +1,12 @@
 package at.ac.fhcampuswien.fhmdb.database;
 
+import com.j256.ormlite.dao.Dao;
+
 import java.util.List;
 
 public class WatchlistRepository {
 
-    WatchlistMovieDao dao;
+    Dao<WatchlistMovieEntity, Long> dao;
 
     public WatchlistRepository() throws DataBaseException {
         try {
