@@ -1,5 +1,5 @@
-## PRG2 - Exercise 2 Example Solution
-This repository is an example solution for Exercise 2 in PRG2 (2023).
+## PRG2 - Exercise 3 Example Solution
+This repository is an example solution for Exercise 3 in PRG2 (2023).
 
 ### Start the application
 Start the application by either running the `main` method in the `FhmdbApplication` class or by running `mvn clean javafx:run` in Maven.
@@ -27,12 +27,3 @@ Maven uses the default system Java installation. If you have multiple Java insta
 
 ### Run the tests
 Run automated tests by running `mvn clean test` command in Maven.
-
-### TODO
-1. Add H2 and ORMLite to dependencies (H2, ORMLite jdbc)
-2. Add dependencies to `module-info.java` (requires...)
-  `requires ormlite.jdbc;
-   requires java.sql;
-   opens at.ac.fhcampuswien.fhmdb.entities to ormlite.jdbc;`
-3. Add a Database Class
-4. Make Watchlist Class an Entity
