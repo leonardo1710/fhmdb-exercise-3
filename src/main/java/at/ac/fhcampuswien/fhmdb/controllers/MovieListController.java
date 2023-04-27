@@ -56,8 +56,7 @@ public class MovieListController implements Initializable {
     protected SortedState sortedState;
 
     private final ClickEventHandler onAddToWatchlistClicked = (clickedItem) -> {
-        if (clickedItem instanceof Movie) {
-            Movie movie = (Movie) clickedItem;
+        if (clickedItem instanceof Movie movie) {
             WatchlistMovieEntity watchlistMovieEntity = new WatchlistMovieEntity(
                     movie.getId(),
                     movie.getTitle(),
@@ -91,7 +90,6 @@ public class MovieListController implements Initializable {
         } catch (MovieApiException e){
             UserDialog dialog = new UserDialog("MovieAPI Error", "Could not load movies from api");
             dialog.show();
-            e.printStackTrace();
         }
 
         setMovies(result);

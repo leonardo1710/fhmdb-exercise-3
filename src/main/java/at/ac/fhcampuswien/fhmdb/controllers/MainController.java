@@ -1,7 +1,7 @@
 package at.ac.fhcampuswien.fhmdb.controllers;
 
+import at.ac.fhcampuswien.fhmdb.enums.UIComponent;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
-import at.ac.fhcampuswien.fhmdb.ui.UserDialog;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import javafx.animation.TranslateTransition;
@@ -16,10 +16,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class MainController {
-
-    public static final String WATCHLIST_FXML = "/fxml/watchlist.fxml";
-    public static final String HOME_FXML = "/fxml/movie-list.fxml";
-
     @FXML
     public JFXHamburger hamburgerMenu;
 
@@ -113,11 +109,11 @@ public class MainController {
 
     @FXML
     public void navigateToWatchlist() {
-        setContent(WATCHLIST_FXML);
+        setContent(UIComponent.WATCHLIST.path);
     }
 
     @FXML
     public void navigateToMovielist() {
-        setContent(HOME_FXML);
+        setContent(UIComponent.MOVIELIST.path);
     }
 }

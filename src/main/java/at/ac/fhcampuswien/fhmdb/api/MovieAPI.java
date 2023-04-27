@@ -67,7 +67,6 @@ public class MovieAPI {
 
             return Arrays.asList(movies);
         } catch (Exception e) {
-            //System.err.println(e.getMessage());
             throw new MovieApiException(e.getMessage());
         }
     }

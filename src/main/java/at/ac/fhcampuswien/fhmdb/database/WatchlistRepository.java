@@ -10,7 +10,7 @@ public class WatchlistRepository {
 
     public WatchlistRepository() throws DataBaseException {
         try {
-            this.dao = Database.getInstance().getWatchlistDao();
+            this.dao = DatabaseManager.getInstance().getWatchlistDao();
         } catch (Exception e) {
             throw new DataBaseException(e.getMessage());
         }

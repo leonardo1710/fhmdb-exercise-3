@@ -22,7 +22,7 @@ public class MovieCell extends ListCell<Movie> {
     private final VBox layout = new VBox(header, detail, genre);
     private boolean collapsedDetails = true;
 
-    public MovieCell(ClickEventHandler addToWatchlistClicked) {
+    public MovieCell(ClickEventHandler<Movie> addToWatchlistClicked) {
         super();
         // color scheme
         detailBtn.setStyle("-fx-background-color: #f5c518;");
