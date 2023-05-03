@@ -32,6 +32,7 @@ public class MainController {
     public void initialize() {
         transition = new HamburgerBasicCloseTransition(hamburgerMenu);
         transition.setRate(-1);
+        drawer.toBack();
 
         hamburgerMenu.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             toggleMenuDrawer();
@@ -53,11 +54,13 @@ public class MainController {
             translateTransition.setByX(130);
             translateTransition.play();
             isMenuCollapsed = false;
+            drawer.toFront();
         } else {
             TranslateTransition translateTransition=new TranslateTransition(Duration.seconds(0.5), drawer);
             translateTransition.setByX(-130);
             translateTransition.play();
             isMenuCollapsed = true;
+            drawer.toBack();
         }
     }
 

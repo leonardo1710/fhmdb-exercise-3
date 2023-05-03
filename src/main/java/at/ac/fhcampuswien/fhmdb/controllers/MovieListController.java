@@ -137,14 +137,21 @@ public class MovieListController implements Initializable {
         observableMovies.clear();
         observableMovies.addAll(movies);
     }
+    public void sortMovies(){
+        if (sortedState == SortedState.NONE || sortedState == SortedState.DESCENDING) {
+            sortMovies(SortedState.ASCENDING);
+        } else if (sortedState == SortedState.ASCENDING) {
+            sortMovies(SortedState.DESCENDING);
+        }
+    }
     // sort movies based on sortedState
     // by default sorted state is NONE
     // afterwards it switches between ascending and descending
-    public void sortMovies() {
-        if (sortedState == SortedState.NONE || sortedState == SortedState.DESCENDING) {
+    public void sortMovies(SortedState sortDirection) {
+        if (sortDirection == SortedState.ASCENDING) {
             observableMovies.sort(Comparator.comparing(Movie::getTitle));
             sortedState = SortedState.ASCENDING;
-        } else if (sortedState == SortedState.ASCENDING) {
+        } else {
             observableMovies.sort(Comparator.comparing(Movie::getTitle).reversed());
             sortedState = SortedState.DESCENDING;
         }
@@ -202,10 +209,11 @@ public class MovieListController implements Initializable {
         List<Movie> movies = getMovies(searchQuery, genre, releaseYear, ratingFrom);
 
         setMovies(movies);
+        setMovieList(movies);
         // applyAllFilters(searchQuery, genre);
 
         if(sortedState != SortedState.NONE) {
-            sortMovies();
+            sortMovies(sortedState);
         }
     }
 
