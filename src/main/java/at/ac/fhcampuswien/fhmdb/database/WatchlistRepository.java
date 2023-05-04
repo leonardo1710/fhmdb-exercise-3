@@ -26,7 +26,11 @@ public class WatchlistRepository {
     }
     public void addToWatchlist(WatchlistMovieEntity movie) throws DataBaseException {
         try {
-            dao.createIfNotExists(movie);
+            // only add movie if it does not exist yet
+            long count = dao.queryBuilder().where().eq("apiId", movie.getApiId()).countOf();
+            if (count == 0) {
+                dao.create(movie);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new DataBaseException("Error while adding to watchlist");
