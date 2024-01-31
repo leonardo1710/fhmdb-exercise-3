@@ -17,10 +17,12 @@ public class MovieCell extends ListCell<Movie> {
     private final Label detail = new Label();
     private final Label genre = new Label();
     private final JFXButton detailBtn = new JFXButton("Show Details");
-    private final JFXButton watchlistBtn = new JFXButton("Watchlist");
+    private final JFXButton watchlistBtn = new JFXButton("To Watchlist");
     private final HBox header = new HBox(title, detailBtn, watchlistBtn);
     private final VBox layout = new VBox(header, detail, genre);
     private boolean collapsedDetails = true;
+
+    // movieID = 1;
 
     public MovieCell(ClickEventHandler<Movie> addToWatchlistClicked) {
         super();

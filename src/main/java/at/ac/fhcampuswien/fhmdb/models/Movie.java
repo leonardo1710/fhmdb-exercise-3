@@ -29,11 +29,7 @@ public class Movie {
         this.rating = 0;
     }
     public Movie(String id, String title, String description, List<Genre> genres, int releaseYear, String imgUrl, int lengthInMinutes, double rating) {
-        if(id == null) {
-            this.id = UUID.randomUUID().toString();
-        } else {
-            this.id = id;
-        }
+        this.id = id;
         this.title = title;
         this.description = description;
         this.genres = genres;

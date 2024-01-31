@@ -37,19 +37,11 @@ public class WatchlistRepository {
         }
     }
 
-    public void removeFromWatchlist(WatchlistMovieEntity movie) throws DataBaseException {
+    public void removeFromWatchlist(String apiId) throws DataBaseException {
         try {
-            dao.delete(movie);
+            dao.delete(dao.queryBuilder().where().eq("apiId", apiId).query());
         } catch (Exception e) {
             throw new DataBaseException("Error while removing from watchlist");
-        }
-    }
-
-    public boolean isOnWatchlist(WatchlistMovieEntity movie) throws DataBaseException {
-        try {
-            return dao.queryForMatching(movie).size() > 0;
-        } catch (Exception e) {
-            throw new DataBaseException("Error while checking if movie is on watchlist");
         }
     }
 }

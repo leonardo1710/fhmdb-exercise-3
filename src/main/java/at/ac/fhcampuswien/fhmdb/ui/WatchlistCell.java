@@ -1,7 +1,7 @@
 package at.ac.fhcampuswien.fhmdb.ui;
 
 import at.ac.fhcampuswien.fhmdb.ClickEventHandler;
-import at.ac.fhcampuswien.fhmdb.database.WatchlistMovieEntity;
+import at.ac.fhcampuswien.fhmdb.database.MovieEntity;
 import com.jfoenix.controls.JFXButton;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,7 +12,7 @@ import javafx.scene.paint.Color;
 
 import java.util.stream.Collectors;
 
-public class WatchlistCell extends ListCell<WatchlistMovieEntity> {
+public class WatchlistCell extends ListCell<MovieEntity> {
     private final Label title = new Label();
     private final Label description = new Label();
     private final Label genre = new Label();
@@ -63,6 +63,7 @@ public class WatchlistCell extends ListCell<WatchlistMovieEntity> {
 
     private VBox getDetails() {
         VBox details = new VBox();
+
         Label releaseYear = new Label("Release Year: " + getItem().getReleaseYear());
         Label length = new Label("Length: " + getItem().getLengthInMinutes() + " minutes");
         Label rating = new Label("Rating: " + getItem().getRating());
@@ -74,31 +75,35 @@ public class WatchlistCell extends ListCell<WatchlistMovieEntity> {
         details.getChildren().add(releaseYear);
         details.getChildren().add(rating);
         details.getChildren().add(length);
+
+
         return details;
     }
     @Override
-    protected void updateItem(WatchlistMovieEntity watchlistMovieEntity, boolean empty) {
-        super.updateItem(watchlistMovieEntity, empty);
+    protected void updateItem(MovieEntity movieEntity, boolean empty) {
+        super.updateItem(movieEntity, empty);
 
-        if (empty || watchlistMovieEntity == null) {
+        if (empty || movieEntity == null) {
             setGraphic(null);
             setText(null);
         } else {
             this.getStyleClass().add("movie-cell");
-            title.setText(watchlistMovieEntity.getTitle());
+
+            title.setText(movieEntity.getTitle());
             description.setText(
-                    watchlistMovieEntity.getDescription() != null
-                            ? watchlistMovieEntity.getDescription()
+                    movieEntity.getDescription() != null
+                            ? movieEntity.getDescription()
                             : "No description available"
             );
 
             description.setMaxWidth(this.getScene().getWidth() - 30);
 
-            String genres = watchlistMovieEntity.getGenres()
+            String genres = movieEntity.getGenres()
                     .stream()
                     .map(Enum::toString)
                     .collect(Collectors.joining(", "));
             genre.setText(genres);
+
             setGraphic(layout);
         }
     }

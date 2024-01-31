@@ -3,9 +3,7 @@ package at.ac.fhcampuswien.fhmdb.controllers;
 import at.ac.fhcampuswien.fhmdb.ClickEventHandler;
 import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
 import at.ac.fhcampuswien.fhmdb.api.MovieApiException;
-import at.ac.fhcampuswien.fhmdb.database.DataBaseException;
-import at.ac.fhcampuswien.fhmdb.database.WatchlistMovieEntity;
-import at.ac.fhcampuswien.fhmdb.database.WatchlistRepository;
+import at.ac.fhcampuswien.fhmdb.database.*;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.SortedState;
@@ -58,14 +56,7 @@ public class MovieListController implements Initializable {
     private final ClickEventHandler onAddToWatchlistClicked = (clickedItem) -> {
         if (clickedItem instanceof Movie movie) {
             WatchlistMovieEntity watchlistMovieEntity = new WatchlistMovieEntity(
-                    movie.getId(),
-                    movie.getTitle(),
-                    movie.getDescription(),
-                    movie.getReleaseYear(),
-                    movie.getGenres(),
-                    movie.getImgUrl(),
-                    movie.getLengthInMinutes(),
-                    movie.getRating());
+                    movie.getId());
             try {
                 WatchlistRepository repository = new WatchlistRepository();
                 repository.addToWatchlist(watchlistMovieEntity);
@@ -84,17 +75,43 @@ public class MovieListController implements Initializable {
     }
 
     public void initializeState() {
-        List<Movie> result = new ArrayList<>();
+        List<Movie> result;
         try {
             result = MovieAPI.getAllMovies();
+            writeCache(result);
         } catch (MovieApiException e){
-            UserDialog dialog = new UserDialog("MovieAPI Error", "Could not load movies from api");
+            UserDialog dialog = new UserDialog("MovieAPI Error", "Could not load movies from api. Get movies from db cache instead");
             dialog.show();
+            result = readCache();
         }
 
         setMovies(result);
         setMovieList(result);
         sortedState = SortedState.NONE;
+    }
+
+    private List<Movie> readCache() {
+        try {
+            MovieRepository movieRepository = new MovieRepository();
+            return MovieEntity.toMovies(movieRepository.getAllMovies());
+        } catch (DataBaseException e) {
+            UserDialog dialog = new UserDialog("DB Error", "Could not load movies from DB");
+            dialog.show();
+            return new ArrayList<>();
+        }
+    }
+
+    private void writeCache(List<Movie> movies) {
+        try {
+            // cache movies in db
+            MovieRepository movieRepository = new MovieRepository();
+            movieRepository.removeAll();
+            movieRepository.addAllMovies(movies);
+
+        } catch (DataBaseException e) {
+            UserDialog dialog = new UserDialog("DB Error", "Could not write movies to DB");
+            dialog.show();
+        }
     }
 
     public void initializeLayout() {
