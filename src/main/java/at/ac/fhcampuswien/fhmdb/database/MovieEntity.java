@@ -38,9 +38,6 @@ public class MovieEntity {
     @DatabaseField()
     private double rating;
 
-    @DatabaseField()
-    private boolean isOnWatchlist;
-
     public MovieEntity(){}
 
     public MovieEntity(String apiId, String title, String description, int releaseYear, List<Genre> genres, String imgUrl, int lengthInMinutes, double rating) {

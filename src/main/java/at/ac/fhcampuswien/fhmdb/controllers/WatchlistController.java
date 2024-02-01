@@ -45,13 +45,13 @@ public class WatchlistController implements Initializable {
         List<WatchlistMovieEntity> watchlist = new ArrayList<>();
         try {
             watchlistRepository = new WatchlistRepository();
-            watchlist = watchlistRepository.readWatchlist();
+            watchlist = watchlistRepository.getWatchlist();
 
             MovieRepository movieRepository = new MovieRepository();
             List<MovieEntity> movies = new ArrayList<>();
 
             for(WatchlistMovieEntity movie : watchlist) {
-                movies.add(movieRepository.readMovie(movie.getApiId()));
+                movies.add(movieRepository.getMovie(movie.getApiId()));
             }
 
             observableWatchlist.addAll(movies);

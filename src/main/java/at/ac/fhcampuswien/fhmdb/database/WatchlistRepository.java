@@ -16,7 +16,7 @@ public class WatchlistRepository {
         }
     }
 
-    public List<WatchlistMovieEntity> readWatchlist() throws DataBaseException {
+    public List<WatchlistMovieEntity> getWatchlist() throws DataBaseException {
         try {
             return dao.queryForAll();
         } catch (Exception e) {
@@ -24,12 +24,14 @@ public class WatchlistRepository {
             throw new DataBaseException("Error while reading watchlist");
         }
     }
-    public void addToWatchlist(WatchlistMovieEntity movie) throws DataBaseException {
+    public int addToWatchlist(WatchlistMovieEntity movie) throws DataBaseException {
         try {
             // only add movie if it does not exist yet
             long count = dao.queryBuilder().where().eq("apiId", movie.getApiId()).countOf();
             if (count == 0) {
-                dao.create(movie);
+                return dao.create(movie);
+            } else {
+                return 0;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -37,9 +39,9 @@ public class WatchlistRepository {
         }
     }
 
-    public void removeFromWatchlist(String apiId) throws DataBaseException {
+    public int removeFromWatchlist(String apiId) throws DataBaseException {
         try {
-            dao.delete(dao.queryBuilder().where().eq("apiId", apiId).query());
+            return dao.delete(dao.queryBuilder().where().eq("apiId", apiId).query());
         } catch (Exception e) {
             throw new DataBaseException("Error while removing from watchlist");
         }

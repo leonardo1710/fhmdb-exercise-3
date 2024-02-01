@@ -42,7 +42,7 @@ public class MovieRepository {
         }
     }
 
-    public MovieEntity readMovie(String apiId) throws DataBaseException {
+    public MovieEntity getMovie(String apiId) throws DataBaseException {
         try {
             return dao.queryBuilder().where().eq("apiId", apiId).queryForFirst();
         } catch (Exception e) {
