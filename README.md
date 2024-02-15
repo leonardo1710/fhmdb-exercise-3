@@ -1,5 +1,5 @@
 ## PRG2 - Exercise 3 Example Solution
-This repository is an example solution for Exercise 3 in PRG2 (2023).
+This repository is an example solution for Exercise 3 in PRG2.
 
 ### Start the application
 Start the application by either running the `main` method in the `FhmdbApplication` class or by running `mvn clean javafx:run` in Maven.
